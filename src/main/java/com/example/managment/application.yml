@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/student_management?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul  
+    url: jdbc:mysql://us-cdbr-east-04.cleardb.com/heroku_cb9d15b60e9e7ea?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
         
 ---
-spring:  datasource:    username: root
+spring:  datasource:    username: b11e90504f5236
    
 ---
-spring:  datasource:    password: 1234
+spring:  datasource:    password: 6af38437
    
 ---
 spring:  jpa:    show-sql: true
