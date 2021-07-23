@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+<title>성적 수정</title>
+</head>
+
+<div layout:fragment="content">
+	<h4 class="mt-4 border-bottom">성적 수정</h4>
+	<a th:href="@{/score_list}" class="btn btn-outline-success btn-sm  my-2">성적목록</a>
+		<form th:action="@{|/score_edit/${score.studentNo}|}" method="POST">
+		
+<div class="my-3 row">
+	<div class="col-sm-12">
+		<table class="table table-bordered table-striped table-sm">
+		<thead>
+			<tr>
+				<th class="text-center">학사번호</th>
+				<th class="text-center">국어 성적</th>
+				<th class="text-center">수학 성적</th>
+				<th class="text-center">사회 성적</th>
+				<th class="text-center">등록 일자</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td>
+					<input type="text" class="form-control" th:value="${score.studentNo}" readonly>
+				</td>
+				<td>
+					<input type="text" class="form-control" th:value="${score.guk}" readonly>
+				</td>
+				<td>
+					<input type="text" class="form-control" th:value="${score.math}" readonly>
+				</td>
+				<td>
+					<input type="text" class="form-control" th:value="${score.sahee}" readonly>
+				</td>
+				
+				<td align="center" th:text="${#dates.format(score.createdAt,'yyyy-MM-dd')}"></td>
+				
+				<td>
+					
+				</td>
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr>
+				<td>
+					<input type="hidden" th:value="${score.studentNo}" name="studentNo">
+				</td>
+				<td>
+				<div class="form-floating mb-0">
+ 					 <input type="number" class="form-control" id="floatingInput" th:value="${score.guk}" required name="guk">
+  					 <label for="floatingInput">수정 점수</label>
+				</div>
+				</td>
+				<td>
+					<div class="form-floating mb-0">
+ 					 <input type="number" class="form-control" id="floatingInput" th:value="${score.math}" required name="math">
+  					 <label for="floatingInput">수정 점수</label>
+				</div>
+				</td>
+				<td>
+					<div class="form-floating mb-0">
+ 					 <input type="number" class="form-control" id="floatingInput" th:value="${score.sahee}" required name="sahee">
+  					 <label for="floatingInput">수정 점수</label>
+				</div>
+				</td>
+			
+				<td>
+				</td>
+			
+				<td>
+					<button type="submit" class="btn btn-outline-primary btn-sm">수정</button>
+					<a th:href="@{/score_list}" class="btn btn-outline-success btn-sm">취소</a>
+
+				</td>
+			</tr>
+			</tfoot>
+	</table>
+	</div>
+
+</div>	
+		
+	</form>
+
+</div>

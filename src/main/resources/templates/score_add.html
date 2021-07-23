@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorate="~{layout/layout}">
+<head>
+<title>Home</title>
+
+</head>
+
+<div layout:fragment="content">
+	<h3 class="my-4">성적등록</h3>
+	<hr>						<!-- 클래스를 표현 -->
+<form th:action="@{/score_add}" th:object="${scoreForm}" method="POST">
+	<!-- 학사번호 -->
+	<div class="mb-3 row">
+		<div class="col-sm-1"></div>
+		<label for="studentNo" class="col-sm-2 col-form-label">학사번호</label>
+		<div class="col-sm-9 w-75">
+			<div class="form-floating mb-3">	   <!-- 클래스안에 있는 필드 -->
+				<input type="text" id="studentNo" th:field="*{studentNo}" class="form-control" placeholder="학사번호를 입력하십시오.">
+				<label for="studentNo">학사번호를 입력하십시오.</label>
+			</div>
+			<div class="validation_error" th:if="${#fields.hasErrors('studentNo')}" th:errors="*{studentNo}">student_no Error</div>
+		</div>
+	</div>
+	
+	<!-- 국어성적 -->
+	<div class="mb-3 row">
+		<div class="col-sm-1"></div>
+		<label for="guk" class="col-sm-2 col-form-label">국어성적</label>
+		<div class="col-sm-9 w-75">
+			<div class="form-floating mb-3">
+				<input type="number" id="guk" th:field="*{guk}" class="form-control" placeholder="국어성적을 입력하십시오." required>
+				<label for="guk">국어성적을 입력하십시오.</label>
+			</div>
+			<div class="validation_error" th:if="${#fields.hasErrors('guk')}" th:errors="*{guk}">guk Error</div>
+		</div>
+	</div>
+	
+	<!-- 수학성적 -->
+	<div class="mb-3 row">
+		<div class="col-sm-1"></div>
+		<label for="math" class="col-sm-2 col-form-label">수학성적</label>
+		<div class="col-sm-9 w-75">
+			<div class="form-floating mb-3">
+				<input type="number" id="math" th:field="*{math}" class="form-control" placeholder="수학성적을 입력하십시오." required>
+				<label for="math">수학성적을 입력하십시오..</label>
+			</div>
+					<div class="validation_error" th:if="${#fields.hasErrors('math')}" th:errors="*{math}">math Error</div>
+		</div>
+	</div>
+	
+	
+	<!-- 사회성적 -->
+	<div class="mb-3 row">
+		<div class="col-sm-1"></div>
+		<label for="add_value" class="col-sm-2 col-form-label">사회성적</label>
+		<div class="col-sm-9 w-75">
+			<div class="form-floating mb-3">
+				<input type="number" id="sahee" th:field="*{sahee}"  class="form-control" placeholder="사회성적을 입력하십시오." required>
+				<label for="sahee">사회성적을 입력하십시오.</label>
+			</div>
+				<div class="validation_error" th:if="${#fields.hasErrors('sahee')}" th:errors="*{sahee}">sahee Error</div>
+		</div>
+	</div>
+	
+	<!-- 버튼 -->
+	<div class="mb-3 row">
+		<div class="col-sm-3">
+		</div>
+		<div class="col-sm-3">
+				<button type="submit" class="btn btn-outline-primary btn-lg">등록</button>
+				<button type="reset" class="btn btn-outline-primary btn-lg mx-auto">초기화</button>
+		</div>
+		<div class="col-sm-6">
+		</div>
+	</div>
+	
+</form>
+</div>

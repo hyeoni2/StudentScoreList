@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorate="~{layout/layout}">
+<head>
+<title>학생 정보 등록</title>
+
+</head>
+
+<div layout:fragment="content">
+	<h3 class="my-4">학생 정보 등록</h3>
+	<hr>
+	<form th:action="@{/student_add}" th:object="${studentInfoForm}" method="POST" enctype="multipart/form-data">
+		<div class="my-3 row">
+		<div class="col-sm-1"></div>
+		<label for="name" class="col-sm-2 col-form-label">이름</label>
+		<div class="col-sm-9 w-75">
+			<div class="form-floating mb-3">	   <!-- 클래스안에 있는 필드 -->
+				<input type="text" id="name" th:field="*{name}" class="form-control" placeholder="이름을 입력하십시오." >
+				<label for="name">이름을 입력하십시오.</label>
+			</div>
+			<div class="validation_error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+		</div>
+	</div>
+	
+		<div class="my-3 row">
+		<div class="col-sm-1"></div>		
+		<label for="photo" class="col-sm-2 col-form-label">사진</label>
+		<div class="col-sm-9">
+			   <!-- 클래스안에 있는 필드 -->
+				<input class="form-control form-control-lg mb-4" id="formFileLg"  type="file" th:field="*{photo}" name="photo" accept="image/png, image/jpeg">
+				<div class="validation_error" th:if="${#fields.hasErrors('photo')}" th:errors="*{photo}">photo Error</div>
+		</div>
+		</div>
+	
+		<div class="my-3 row">
+		<div class="col-sm-1"></div>
+		<label for="phoneNumber" class="col-sm-2 col-form-label">핸드폰 번호</label>
+		<div class="col-sm-9 w-75">
+			<div class="form-floating mb-3">	   <!-- 클래스안에 있는 필드 -->
+				<input type="text" id="phoneNumber" th:field="*{phoneNumber}" class="form-control" placeholder="핸드폰 번호를 입력하십시오.">
+				<label for="phoneNumber">핸드폰 번호를 입력하십시오.</label>
+			</div>
+			<div class="validation_error" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">phoneNumber Error</div>
+		</div>
+	</div>
+	
+	<div class="mb-3 row">
+		<div class="col-sm-3">
+		</div>
+		<div class="col-sm-3">
+				<button type="submit" class="btn btn-outline-primary btn-lg">등록</button>
+				<button type="reset" class="btn btn-outline-primary btn-lg mx-auto">초기화</button>
+		</div>
+		<div class="col-sm-6">
+		</div>
+	</div>
+	
+	
+	</form>
+</div>

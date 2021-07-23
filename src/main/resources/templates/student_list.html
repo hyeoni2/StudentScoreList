@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorate="~{layout/layout}">
+<head>
+	<title>학생 정보 목록</title>
+</head>
+
+<div layout:fragment="content">
+	<h3 class="my-4">학생 정보 목록</h3>
+	<hr>
+	<a th:href="@{/student_add}"
+		class="btn btn-outline-success btn-sm mb-5">학생정보 등록</a>
+		
+	
+	<div class="row">
+		<div class="col-sm-11">
+	<table class="table table-bordered table-striped table-sm table align-middle">
+
+		<thead>
+			<tr>
+				<th class="text-center col-sm-3">순번</th>
+				<th class="text-center col-sm-3">이름</th>
+				<th class="text-center col-sm-3">사진</th>
+				<th class="text-center col-sm-3">작성일자</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="studentInfo, rowStat : ${studentInfoList}" th:object = "${studentInfo}" th:style = "${rowStat.odd}? 'background:#f0f0f2;':'background:#ffffff;'">
+				<td class="text-center" th:text = "${rowStat.count}"></td>
+				<td class="text-center" th:text="${studentInfo.name}"></td>
+				<td align="center" th:if="${studentInfo.photo}">
+					<img width="50px" height="50px" th:src="|/get_image/${studentInfo.id}|">
+				</td>	
+				<td align="center" th:text="${#dates.format(studentInfo.editedAt,'yyyy-MM-dd HH:mm:ss')}"></td>
+			</tr>
+		</tbody>	
+		<tfoot>
+	
+		</tfoot>
+	</table>
+	</div>
+    <div class="col-sm-1">
+    </div>
+    </div>
+    
+
+	
+	
+
+	
+</div>
+
+<th:block layout:fragment="extra_script">
+	<script th:inline="javascript">
+
+	</script>
+</th:block>

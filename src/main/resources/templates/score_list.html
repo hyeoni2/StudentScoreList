@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorate="~{layout/layout}">
+<head>
+	<title>Home</title>
+</head>
+
+<div layout:fragment="content">
+	<h3 class="my-4 ">성적목록</h3>
+	<hr>
+	
+	<a th:href="@{/score_add}"
+		class="btn btn-outline-success btn-sm mb-4">성적 등록</a>
+		
+	<div class="row">
+		<div class="col-sm-6"></div>
+		<div class="col-sm-5">		
+		<div class="card shadow-sm mb-2 bg-white rounded">
+			<div class="card-body">
+					<div class="form-check form-check-inline">
+					  <input class="form-check-input" type="radio" onchange="sort_change(this.value);" th:checked = "${sort eq 'studentNo'}" name="scoreList" id="studentNo" value="studentNo">
+					  <label class="form-check-label" for="studentNo">학사번호순 정렬</label>
+					</div>
+					<div class="form-check form-check-inline">
+					  <input class="form-check-input" type="radio" onchange="sort_change(this.value);" th:checked = "${sort eq 'score'}"  name="scoreList" id="score" value="score">
+					  <label class="form-check-label" for="score">성적순 정렬</label>
+					</div>
+					<div class="form-check form-check-inline">
+					  <input class="form-check-input" type="radio" onchange="sort_change(this.value);" th:checked = "${sort eq 'date'}"  name="scoreList" id="date" value="date">
+					  <label class="form-check-label" for="date">최신일자순 정렬</label>
+					</div>
+				</div>
+				</div>
+			</div>
+		<div class="col-sm-1">
+		</div>
+	</div>
+	
+   	<div class="row">
+   	<div class="col-sm-9"></div>
+		<div class="col-sm-3" th:text="${countString}"></div> 
+	</div>	
+	
+	<div class="row">
+		<div class="col-sm-11">
+	<table class="table table-bordered table-striped table-sm table align-middle">
+		
+		<caption style="caption-side: top;">성적 목록 > </caption>
+		<thead>
+			<tr>
+				<th class="text-center col-sm-1">순번</th>
+				<th class="text-center col-sm-1">학사번호</th>
+				<th class="text-center col-sm-1">국어 성적</th>
+				<th class="text-center col-sm-1">수학 성적</th>
+				<th class="text-center col-sm-1">사회 성적</th>
+				<th class="text-center col-sm-1">평균</th>
+				<th class="text-center col-sm-3" >최종 작성 일자</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="score, rowStat : ${scoreList}" th:object="${score}" th:style = "${rowStat.odd}? 'background:#f0f0f2;':'background:#ffffff;'">
+				<td class="text-center" th:text="${rowStat.count}"></td>
+				<td class="text-center" th:text="*{studentNo}"></td>
+				<td align="right" th:text="*{guk}"></td>
+				<td align="right" th:text="*{math}"></td>
+				<td align="right" th:text="*{sahee}"></td>
+				<td align="right" th:text="${#numbers.formatDecimal(score.average,1,1)}"></td>
+				<td align="center" th:text="${#dates.format(score.editedAt,'yyyy-MM-dd HH:mm:ss')}"></td>
+				
+				
+				<td align="center">
+					<a th:href="@{|/score_edit/${score.studentNo}|}" class="btn btn-outline-primary btn-sm">수정</a>
+					
+						<button class="btn btn-outline-danger btn-sm del-button-clicked" data-toggle="modal" th:id = "${score.studentNo}" onclick="del_button_clicked(this.id);"
+							data-target="#deleteModal" th:data-pk="${score.studentNo}" th:data-url="@{|/score_del/${score.studentNo}|}">
+							삭제
+						</button>
+				</td>
+			</tr>
+		</tbody>	
+		<tfoot>
+			<tr>
+			
+				<th class="text-center col-sm-1" colspan="2">평균</th>
+				
+				<td class="text-right col-sm-1">[[${getGukAvg}]]</td>
+				<td class="text-right col-sm-1">[[${getMathAvg}]]</td>
+				<td class="text-right col-sm-1">[[${getSaheeAvg}]]</td>			
+
+	
+			</tr>
+		</tfoot>
+	</table>
+	</div>
+    <div class="col-sm-1">
+    </div>
+    </div>
+    
+ 
+	
+	
+	<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+		<div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<img src="images/database-ok.png" class="rounded me-2" alt="..."> 
+				<strong class="me-auto">학사 관리 시스템</strong>
+				 <small>2초 후에 사라짐</small>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body" id = "db_message">
+			Hello, world! This is a toast message.
+			</div>
+		</div>
+	</div>
+	
+	
+	<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">성적 삭제</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	        <span id="score_student_no"></span>의 성적을 삭제하시겠습니까?
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-outline-success btn-sm" data-bs-dismiss="modal">취소</button>
+	        <button type="button" class="btn btn-outline-danger btn-sm" id="deleteConfirm">확인</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+</div>
+
+<th:block layout:fragment="extra_script">
+	<script th:inline="javascript">
+		function sort_change(radio_value) {
+			location.href = '/score_list?sort=' + radio_value;
+		}
+	
+			let modal = null;
+		    let url = null;	
+	
+	
+		function del_button_clicked(clicked_id) {
+			let delButton = document.getElementById(clicked_id);
+			let pk = delButton.dataset.pk;  
+			
+		    document.getElementById('score_student_no').textContent = "「학사번호"+pk+"」";
+		    url = delButton.dataset.url;
+		
+		
+			let container = document.getElementById("deleteModal");
+	        modal = new bootstrap.Modal(container);
+	        modal.show();
+	}
+		
+		
+			document.getElementById("deleteConfirm").addEventListener("click", function () {
+            if (modal != null ) {
+               	modal.hide();
+                location.href = url;
+            }
+			});
+	
+		
+		
+		/*<![CDATA[*/
+		var db_message = /*[[${db_message}]]*/;
+		
+		if(db_message != null) {
+			document.getElementById('db_message').textContent = db_message;
+			
+			var toast = document.getElementById('liveToast');
+			var bsToast = new bootstrap.Toast(toast);
+			bsToast.show();
+		}
+		/*<![CDATA[*/
+	</script>
+</th:block>
